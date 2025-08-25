@@ -24,6 +24,8 @@ async function empezarChat(elAgente, mensajeBienvenida = ''){
       output: process.stdout
     });
 
+    const memoria = [];
+
     for await (const pregunta of rl) {
       if (pregunta.toLowerCase() === 'exit') {
         imprimirMensaje("\n👋 ¡Chau! ¡Gracias por usar el asistente!");
@@ -32,8 +34,19 @@ async function empezarChat(elAgente, mensajeBienvenida = ''){
       }
 
       const start = Date.now();
-      const respuesta = await elAgente.run(pregunta);
+      const respuesta = await elAgente.run(pregunta, memoria);
       const end = Date.now();
+
+      memoria.push(
+        {
+          content: pregunta,
+          role: "user"
+        },
+        {
+          content: respuesta.result,
+          role: "bot" 
+        }
+      );
 
       imprimirMensaje(formatResponse(respuesta));
       imprimirMensaje(`\n⏱️  Tiempo de respuesta: ${((end - start) / 1000).toFixed(2)} segundos`);

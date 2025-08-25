@@ -3,6 +3,10 @@ import { readFileSync, writeFileSync } from 'fs';
 
 const DATA_FILE = './data/alumnos.json';
 
+const comprobarStringQuery = (string1, string2) => {
+  return string1.toLowerCase() === string2.toLowerCase()
+};
+
 class Estudiantes {
   constructor() {
     this.estudiantes = [];
@@ -27,24 +31,29 @@ class Estudiantes {
     }
   }
 
-  // TODO: Implementar método para agregar estudiante
   agregarEstudiante(nombre, apellido, curso) {
-    // Tu código aquí
+    const existe = this.estudiantes.findIndex(estudiante => (
+      comprobarStringQuery(estudiante.nombre, nombre) && comprobarStringQuery(estudiante.apellido, apellido)
+    ));
+
+    if (!existe) {
+      this.estudiantes.push({ nombre, apellido, curso });
+      this.guardarEstudiantes();
+    } else {
+      throw Error("Estudiante ya existe");
+    }
   }
 
-  // TODO: Implementar método para buscar estudiante por nombre
   buscarEstudiantePorNombre(nombre) {
-    // Tu código aquí
+    return this.estudiantes.filter(estudiante => comprobarStringQuery(estudiante.nombre, nombre));
   }
 
-  // TODO: Implementar método para buscar estudiante por apellido
   buscarEstudiantePorApellido(apellido) {
-    // Tu código aquí
+    return this.estudiantes.filter(estudiante => comprobarStringQuery(estudiante.apellido, apellido));
   }
 
-  // TODO: Implementar método para listar estudiantes
   listarEstudiantes() {
-    // Tu código aquí
+    return this.estudiantes;
   }
 }
 
