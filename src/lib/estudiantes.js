@@ -32,7 +32,7 @@ class Estudiantes {
   }
 
   agregarEstudiante(nombre, apellido, curso) {
-    const existe = this.estudiantes.findIndex(estudiante => (
+    const existe = this.estudiantes.find(estudiante => (
       comprobarStringQuery(estudiante.nombre, nombre) && comprobarStringQuery(estudiante.apellido, apellido)
     ));
 

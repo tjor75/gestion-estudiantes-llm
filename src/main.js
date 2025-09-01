@@ -22,10 +22,17 @@ Usá las herramientas disponibles para:
 - Mostrar la lista completa de estudiantes
 
 Respondé de forma clara y breve.
+
+En los registros de estudiantes:
+- Nombres y apellidos finales deben estar apropiadamente capitalizados.
+- Curso debe ser un número, seguido por varias letras en mayúscula sin espacios, ni caracteres especiales (ej: 4A, 4B, 5A).
+
+Si la consulta no está relacionada con estudiantes, respondé que no podés ayudar con eso.
+Si no estás seguro de la respuesta o no podés deducir el formato correcto, preguntá antes de actuar.
 `.trim();
 
 const ollamaLLM = new Ollama({
-    model: "qwen3:1.7b",
+    model: "qwen3:4b",
     temperature: 0.75,
     timeout: 2 * 60 * 1000, // Timeout de 2 minutos
 });
@@ -62,10 +69,15 @@ const agregarEstudianteTool = tool({
     parameters: z.object({
         nombre: z.string().describe("El nombre del estudiante"),
         apellido: z.string().describe("El apellido del estudiante"),
-        curso: z.string().describe("El curso del estudiante (ej: 4A, 4B, 5A)"),
+        curso: z.string().describe("El curso del estudiante"),
     }),
     execute: ({ nombre, apellido, curso }) => {
-        estudiantes.agregarEstudiante(nombre, apellido, curso);
+        try {
+            estudiantes.agregarEstudiante(nombre, apellido, curso);
+            return "Estudiante agregado correctamente.";
+        } catch (error) {
+            return `Error al agregar estudiante: ${error.message}`;
+        }
     },
 });
 
