@@ -14,10 +14,10 @@ class Estudiantes {
   
   cargarEstudiantesDesdeJson() {
     try {
-        const data = JSON.parse(readFileSync(DATA_FILE, 'utf-8'));
-        this.estudiantes = data.alumnos || [];
+      const data = JSON.parse(readFileSync(DATA_FILE, 'utf-8'));
+      this.estudiantes = data.alumnos || [];
     } catch (e) {
-        console.error("Error al leer el archivo de datos:", e);
+      console.error("Error al leer el archivo de datos:", e);
     }
   }
 
@@ -27,21 +27,24 @@ class Estudiantes {
       this.cargarEstudiantesDesdeJson();
     } catch (e) {
       console.error("Error al guardar los estudiantes:", e);
-      throw new Error("No se pudo guardar la lista de estudiantes.");
+      throw new Error("No se pudo guardar la lista de estudiantes");
     }
   }
 
   agregarEstudiante(nombre, apellido, curso) {
-    const existe = this.estudiantes.find(estudiante => (
-      comprobarStringQuery(estudiante.nombre, nombre) && comprobarStringQuery(estudiante.apellido, apellido)
-    ));
+    const regexCurso = /^[0-9]+\p{L}+$/gu;
+    if (!regexCurso.test(curso))
+      throw Error("Curso debe ser un número, seguido por una o varias letras en mayúscula sin espacios (ej: 4A, 4B, 5A)");
 
-    if (!existe) {
-      this.estudiantes.push({ nombre, apellido, curso });
-      this.guardarEstudiantes();
-    } else {
+    const existe = this.estudiantes.find(estudiante => (
+      comprobarStringQuery(estudiante.nombre, nombre) &&
+      comprobarStringQuery(estudiante.apellido, apellido)
+    ));
+    if (existe)
       throw Error("Estudiante ya existe");
-    }
+
+    this.estudiantes.push({ nombre, apellido, curso: curso.toUpperCase() });
+    this.guardarEstudiantes();
   }
 
   buscarEstudiantePorNombre(nombre) {

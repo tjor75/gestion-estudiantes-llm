@@ -23,16 +23,18 @@ Usá las herramientas disponibles para:
 
 Respondé de forma clara y breve.
 
-En los registros de estudiantes:
-- Nombres y apellidos finales deben estar apropiadamente capitalizados.
-- Curso debe ser un número, seguido por varias letras en mayúscula sin espacios, ni caracteres especiales (ej: 4A, 4B, 5A).
+Al registrar a un estudiante sigue estas especificaciones para los campos requeridos:
+- Nombres de pila y apellidos deben contener letras.
+- Código de curso debe ser un número, seguido por varias letras indisinta de la capitalización sin espacios (ej: 4A, 4B, 5A).
+En ningún caso se admiten caracteres especiales, ni comprobar en la base de datos que lo hayas registrado bien.
+Aplica las capitalizaciones adecuadas para nombres, apellidos y curso por tu cuenta.
 
 Si la consulta no está relacionada con estudiantes, respondé que no podés ayudar con eso.
-Si no estás seguro de la respuesta o no podés deducir el formato correcto, preguntá antes de actuar.
+Si no estás seguro de la respuesta o no podés deducir el formato correcto, no asumas nada y preguntá antes de actuar.
 `.trim();
 
 const ollamaLLM = new Ollama({
-    model: "qwen3:4b",
+    model: "qwen3:1.7b",
     temperature: 0.75,
     timeout: 2 * 60 * 1000, // Timeout de 2 minutos
 });
